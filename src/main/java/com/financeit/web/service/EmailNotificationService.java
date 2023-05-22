@@ -14,6 +14,7 @@ import java.util.Properties;
 public class EmailNotificationService {
     public void sendNotification(String to, String subject, String messageContent) {
         // Sender's email address
+
         String from = "finaceit.bank@gmail.com";
 
         // Sender's email password or application-specific password
