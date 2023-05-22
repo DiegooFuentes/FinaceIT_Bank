@@ -1,11 +1,13 @@
 package com.financeit.web.models;
 
+import com.financeit.web.utils.TOTPUtil;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 public class PendingTransaction {
@@ -17,16 +19,23 @@ public class PendingTransaction {
     private TransactionType type;
     private double amount;
     private String description;
-    //private LocalDateTime date;
+
+    //CAMPOS TOTP
+    private String passwordTOTP;
+    private LocalDateTime localDateTimeTOTP;
+
+
 
 
     public PendingTransaction() {
     }
 
-    public PendingTransaction(TransactionType type, double amount, String description) {
+    public PendingTransaction(TransactionType type, double amount, String description, TOTPUtil totpUtil) {
         this.type = type;
         this.amount = amount;
         this.description = description;
+        this.passwordTOTP = totpUtil.getPassword();
+        this.localDateTimeTOTP = totpUtil.getInitialDate();
     }
 
     public Long getId() {
@@ -54,5 +63,21 @@ public class PendingTransaction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPasswordTOTP() {
+        return passwordTOTP;
+    }
+
+    public void setPasswordTOTP(String passwordTOTP) {
+        this.passwordTOTP = passwordTOTP;
+    }
+
+    public LocalDateTime getLocalDateTimeTOTP() {
+        return localDateTimeTOTP;
+    }
+
+    public void setLocalDateTimeTOTP(LocalDateTime localDateTimeTOTP) {
+        this.localDateTimeTOTP = localDateTimeTOTP;
     }
 }
