@@ -8,6 +8,7 @@ import com.financeit.web.models.TransactionType;
 import com.financeit.web.repositories.AccountRepository;
 import com.financeit.web.repositories.ClientRepository;
 import com.financeit.web.repositories.TransactionRepository;
+import com.financeit.web.service.TOTPService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class TransactionController {
     private AccountRepository accountRepository;
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private TOTPService totpService;
 
 
     @Transactional
