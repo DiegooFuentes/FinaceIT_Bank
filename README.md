@@ -1,2 +1,2 @@
 # FinaceIT_Bank
-# FinaceIT_Bank
+Banking app
