@@ -43,7 +43,7 @@ var app = new Vue({
                 this.errorMsg = "You must indicate a description";
                 this.errorToats.show();
             }else{
-                this.modal.show();
+                this.transfer.apply();
             }
         },
         transfer: function(){
@@ -53,6 +53,16 @@ var app = new Vue({
                 }
             }
             axios.post(`/api/transactions?fromAccountNumber=${this.accountFromNumber}&toAccountNumber=${this.accountToNumber}&amount=${this.amount}&description=${this.description}`,config)
+                .then(response => {
+                    this.modal.show();
+                })
+                .catch((error) =>{
+                    this.errorMsg = error.response.data;
+                    this.errorToats.show();
+                })
+        },
+        validateOTP: function() {
+            axios.post(``)
                 .then(response => {
                     this.modal.hide();
                     this.okmodal.show();
@@ -86,7 +96,7 @@ var app = new Vue({
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
-        this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
+        this.modal = new bootstrap.Modal(document.getElementById('otpModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
         this.getData();
     }

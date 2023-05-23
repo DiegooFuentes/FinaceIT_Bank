@@ -114,20 +114,19 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="confirModalLabel" aria-hidden="true">
+    <!-- OTP Modal -->
+    <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="confirmPasswordLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirModalLabel">Confirm Funds Transfer</h5>
+                    <h5 class="modal-title" id="confirmPasswordLabel">OTP Password</h5>
+                    <input type="text">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Transfer cannot be undone, do you want to continue?
-                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" v-on:click="transfer" class="btn btn-sm btn-outline-success">Yes, transfer the funds</button>
+                    <button type="button" v-on:click="validateOTP" class="btn btn-sm btn-outline-success">Transfer the funds</button>
                 </div>
             </div>
         </div>
