@@ -18,6 +18,8 @@ public class PendingTransaction {
     private TransactionType type;
     private double amount;
     private String description;
+    private String accountFromNumber;
+    private String accountToNumber;
 
     //CAMPOS TOTP
     private String passwordTOTP;
@@ -33,6 +35,17 @@ public class PendingTransaction {
         this.description = description;
         this.passwordTOTP = passwordTOTP;
         this.localDateTimeTOTP = localDateTimeTOTP;
+    }
+
+    public PendingTransaction(TransactionType type, double amount, String description, String accountFromNumber, String accountToNumber, String passwordTOTP, LocalDateTime localDateTimeTOTP) {
+        this.type = type;
+        this.amount = amount;
+        this.description = description;
+        this.accountFromNumber = accountFromNumber;
+        this.accountToNumber = accountToNumber;
+        this.passwordTOTP = passwordTOTP;
+        this.localDateTimeTOTP = localDateTimeTOTP;
+
     }
 
     public Long getId() {
@@ -77,5 +90,21 @@ public class PendingTransaction {
 
     public void setLocalDateTimeTOTP(LocalDateTime localDateTimeTOTP) {
         this.localDateTimeTOTP = localDateTimeTOTP;
+    }
+
+    public String getAccountFromNumber() {
+        return accountFromNumber;
+    }
+
+    public void setAccountFromNumber(String accountFromNumber) {
+        this.accountFromNumber = accountFromNumber;
+    }
+
+    public String getAccountToNumber() {
+        return accountToNumber;
+    }
+
+    public void setAccountToNumber(String accountToNumber) {
+        this.accountToNumber = accountToNumber;
     }
 }
