@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class TransactionController {
         this.totpService = totpService;
     }
 
-
+    @Transactional
     @PostMapping("/transactions")
     public ResponseEntity<?> makePendingTransaction(@RequestParam("fromAccountNumber") String accountFromNumber,
                                                     @RequestParam("toAccountNumber") String accountToNumber,
@@ -54,10 +55,10 @@ public class TransactionController {
                                                     @RequestParam("description") String description,
                                                     Authentication authentication) {
 
-
-        emailNotificationService.sendNotification(authentication.getName());
-        return pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
+        ResponseEntity<?> reponse = pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
+        emailNotificationService.sendNotification(authentication.getName());
+        return reponse;
     }
 
     @PostMapping("/transactions/validate")

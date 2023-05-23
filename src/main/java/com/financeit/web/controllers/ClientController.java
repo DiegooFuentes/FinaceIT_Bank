@@ -6,6 +6,7 @@ import com.financeit.web.models.Client;
 import com.financeit.web.repositories.AccountRepository;
 import com.financeit.web.repositories.ClientRepository;
 import com.financeit.web.service.ClientService;
+import com.financeit.web.service.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import static java.util.stream.Collectors.toList;
 public class ClientController {
 
     @Autowired
-    ClientService clientService;
+    ClientServiceImpl clientService;
 
     @GetMapping("/clients")
     public List<ClientDTO> getClients(){
