@@ -43,45 +43,45 @@ public class TransactionController {
                                                   @RequestParam("amount")Double amount,
                                                   @RequestParam("description")String description,
                                                   Authentication authentication){
-        Account destinationAccount = accountRepository.findByNumber(accountToNumber);
-        Client originClient = clientRepository.findByEmail(authentication.getName());
-        Account originAccount = accountRepository.findByNumber(accountFromNumber);
 
-        if(accountRepository.existsAccountByNumber(accountFromNumber)){ //If the origin account exist in database
-
-            if (originClient.getAccounts().contains(originAccount)){ //If the origin acct belongs to authenticated client
-
-                if(accountRepository.existsAccountByNumber(accountToNumber) && !accountFromNumber.equals(accountToNumber)){ //If the destination acct exist in database and is not the same as the origin acct
-
-                    if(originAccount.getBalance() >= amount){ //If the origin acct have enough balance
-
-                        //Transaction from origin acct // type debit
-                        Transaction transactionOrigin = transactionUtil(TransactionType.DEBIT,amount,description, LocalDateTime.now(),originAccount);
-                        transactionRepository.save(transactionOrigin);
-                        originAccount.setBalance(originAccount.getBalance() - amount);
-                        accountRepository.save(originAccount);
-
-                        //Transaction from destination acct // type credit
-                        Transaction transactionDestination = transactionUtil(TransactionType.CREDIT,amount,description,LocalDateTime.now(),destinationAccount);
-                        transactionRepository.save(transactionDestination);
-                        destinationAccount.setBalance(destinationAccount.getBalance() + amount);
-                        accountRepository.save(destinationAccount);
-
-                        return new ResponseEntity<>("Transference done", HttpStatus.CREATED);
-
-                    }else{
-                        return new ResponseEntity<>("Not enough balance", HttpStatus.FORBIDDEN);
-                    }
-
-                }else{
-                    return new ResponseEntity<>("Destination account does not exist or is the same as the origin account", HttpStatus.FORBIDDEN);
-                }
-            } else{
-                return new ResponseEntity<>("Origin account does not exist", HttpStatus.FORBIDDEN);
-            }
-        } else {
-            return new ResponseEntity<>("Origin account does not exist", HttpStatus.FORBIDDEN);
+        if (amount.toString().isEmpty() || amount.isNaN() || description.isEmpty() || accountFromNumber.isEmpty() || accountToNumber.isEmpty()) {
+            return new ResponseEntity<>("Missing data or invalid data", HttpStatus.FORBIDDEN);
         }
+        if (accountFromNumber.equals(accountToNumber)) {
+            return new ResponseEntity<>("Both accounts are the same number", HttpStatus.FORBIDDEN);
+        }
+        Account sourceAccount = accountRepository.findByNumber(accountFromNumber);
+
+        if (sourceAccount == null) {
+            return new ResponseEntity<>("Source account doesn't exist", HttpStatus.FORBIDDEN);
+        }
+
+        if (!sourceAccount.getClient().equals(clientRepository.findByEmail(authentication.getName()))) {
+            return new ResponseEntity<>("The source account doesn't belong to the authenticated client.", HttpStatus.FORBIDDEN);
+        }
+
+        Account destinationAccount = accountRepository.findByNumber(accountToNumber);
+        if (destinationAccount == null) {
+            return new ResponseEntity<>("Destination account doesn't exist", HttpStatus.FORBIDDEN);
+        }
+
+        if (sourceAccount.getBalance() < amount) {
+            return new ResponseEntity<>("Insufficient balance in the source account.", HttpStatus.FORBIDDEN);
+        }
+
+        Transaction transactionSrc = new Transaction(TransactionType.DEBIT
+                , -amount, description + " - " + destinationAccount.getNumber(), LocalDateTime.now(),sourceAccount);
+
+        Transaction transactionDest = new Transaction(TransactionType.CREDIT,
+                amount, description + " - " + sourceAccount.getNumber(), LocalDateTime.now(),destinationAccount);
+        transactionRepository.save(transactionSrc);
+        transactionRepository.save(transactionDest);
+
+        sourceAccount.setBalance(sourceAccount.getBalance()-amount);
+        destinationAccount.setBalance(destinationAccount.getBalance()+amount);
+        accountRepository.save(sourceAccount);
+        accountRepository.save(destinationAccount);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/transactions")
