@@ -3,7 +3,9 @@ package com.financeit.web.controllers;
 import com.financeit.web.dtos.TransactionDTO;
 import com.financeit.web.repositories.AccountRepository;
 import com.financeit.web.repositories.ClientRepository;
+import com.financeit.web.repositories.PendingTransactionRepository;
 import com.financeit.web.repositories.TransactionRepository;
+import com.financeit.web.service.EmailNotificationService;
 import com.financeit.web.service.PendingTransactionService;
 import com.financeit.web.service.TOTPService;
 import com.financeit.web.service.TransactionService;
@@ -33,6 +35,10 @@ public class TransactionController {
     private PendingTransactionService pendingTransactionService;
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private EmailNotificationService emailNotificationService;
+    @Autowired
+    private PendingTransactionRepository pendingTransactionRepository;
 
     @Autowired
     public TransactionController(PendingTransactionService pendingTransactionService, TOTPService totpService) {
@@ -47,6 +53,9 @@ public class TransactionController {
                                                     @RequestParam("amount") Double amount,
                                                     @RequestParam("description") String description,
                                                     Authentication authentication) {
+
+
+        emailNotificationService.sendNotification(authentication.getName());
         return pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
     }
@@ -54,6 +63,7 @@ public class TransactionController {
     @PostMapping("/transactions/validate")
     public ResponseEntity<?> makeTransaction(@RequestParam("dynamicPassword") String passwordTOTP,
                                              Authentication authentication) {
+
         return transactionService.makeTransaction(passwordTOTP, authentication);
     }
 

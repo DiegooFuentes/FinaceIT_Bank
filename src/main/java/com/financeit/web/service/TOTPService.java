@@ -20,7 +20,7 @@ public class TOTPService {
     private static final int TOTP_LENGTH = 6;
     private static final int TOTP_TTL_MINUTES = 5;
 
-    public String generatePasswordTOTP() {
+    public static String generatePasswordTOTP() {
         Random random = new Random();
         int num = random.nextInt(1000000);
         return String.format("%06d", num);

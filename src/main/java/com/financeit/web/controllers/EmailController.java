@@ -22,7 +22,7 @@ public class EmailController {
         String message = "To authorize your transfer enter the following code: ";
 
         // Send the email notification
-        emailNotificationService.sendNotification(to, subject, message);
+        //emailNotificationService.sendNotification(to, subject, message);
     }
 
 }
