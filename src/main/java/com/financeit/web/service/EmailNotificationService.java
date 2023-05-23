@@ -1,5 +1,7 @@
 package com.financeit.web.service;
 
+import com.financeit.web.repositories.PendingTransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -12,7 +14,14 @@ import java.util.Properties;
 
 @Service
 public class EmailNotificationService {
-    public void sendNotification(String to, String subject, String messageContent) {
+
+    private final PendingTransactionRepository pendingTransactionRepository;
+
+    public EmailNotificationService(PendingTransactionRepository pendingTransactionRepository) {
+        this.pendingTransactionRepository = pendingTransactionRepository;
+    }
+
+    public void sendNotification(String receiverEmail) {
         // Sender's email address
         String from = "finaceit.bank@gmail.com";
 
@@ -41,13 +50,13 @@ public class EmailNotificationService {
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiverEmail));
 
             // Set Subject: header field
-            message.setSubject(subject);
+            message.setSubject("New transaction in your account");
 
             // Set the actual message
-            message.setText(messageContent);
+            message.setText("To approve your transaction enter the following code: " + pendingTransactionRepository.findByEmail(receiverEmail).getPasswordTOTP() );
 
             // Send the message
             Transport.send(message);
@@ -57,4 +66,5 @@ public class EmailNotificationService {
             e.printStackTrace();
         }
     }
+
 }
