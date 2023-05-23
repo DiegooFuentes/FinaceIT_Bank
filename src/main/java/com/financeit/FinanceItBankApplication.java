@@ -10,7 +10,7 @@ public class FinanceItBankApplication {
 		SpringApplication.run(FinanceItBankApplication.class, args);
 	}
 
-	/*
+/*
 	@Bean
 	public CommandLineRunner initData() {
 		return (args) -> {
@@ -117,6 +117,6 @@ public class FinanceItBankApplication {
 		return card;
 	}
 
-
 */
+
 }

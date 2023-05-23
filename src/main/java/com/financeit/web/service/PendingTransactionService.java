@@ -60,7 +60,8 @@ public class PendingTransactionService {
         LocalDateTime totpDate = TOTPService.generateDateTOTP();
         String totpPassword = TOTPService.generatePasswordTOTP();
 
-        PendingTransaction pendingTransaction = new PendingTransaction(TransactionType.DEBIT,
+        PendingTransaction pendingTransaction = new PendingTransaction(authentication.getName(),
+                TransactionType.DEBIT,
                 amount,
                 description,
                 accountFromNumber,
