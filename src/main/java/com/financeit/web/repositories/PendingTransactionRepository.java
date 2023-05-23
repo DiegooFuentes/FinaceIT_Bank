@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @RepositoryRestResource
 public interface PendingTransactionRepository extends JpaRepository<PendingTransaction,Long> {
-    PendingTransaction findByPassword(String password);
+   /* PendingTransaction findByPassword(String password);*/
     PendingTransaction findByEmail(String email);
 
 }

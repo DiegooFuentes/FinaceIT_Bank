@@ -10,7 +10,8 @@ var app = new Vue({
         accountToNumber: "VIN",
         transferType: "own",
         amount: 0,
-        description: ""
+        description: "",
+        passwordTOTP: ""
     },
     methods:{
         getData: function(){
@@ -62,7 +63,7 @@ var app = new Vue({
                 })
         },
         validateOTP: function() {
-            axios.post(``)
+            axios.post(`/api/transactions/validate?dynamicPassword=${this.passwordTOTP}`)
                 .then(response => {
                     this.modal.hide();
                     this.okmodal.show();

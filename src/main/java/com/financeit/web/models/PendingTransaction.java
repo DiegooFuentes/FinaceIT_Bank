@@ -25,6 +25,8 @@ public class PendingTransaction {
     private String passwordTOTP;
     private LocalDateTime localDateTimeTOTP;
 
+    private String email;
+
 
     public PendingTransaction() {
     }
@@ -37,7 +39,8 @@ public class PendingTransaction {
         this.localDateTimeTOTP = localDateTimeTOTP;
     }
 
-    public PendingTransaction(TransactionType type, double amount, String description, String accountFromNumber, String accountToNumber, String passwordTOTP, LocalDateTime localDateTimeTOTP) {
+    public PendingTransaction(String email, TransactionType type, double amount, String description, String accountFromNumber, String accountToNumber, String passwordTOTP, LocalDateTime localDateTimeTOTP) {
+        this.email = email;
         this.type = type;
         this.amount = amount;
         this.description = description;
@@ -106,5 +109,13 @@ public class PendingTransaction {
 
     public void setAccountToNumber(String accountToNumber) {
         this.accountToNumber = accountToNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

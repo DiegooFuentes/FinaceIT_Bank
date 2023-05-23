@@ -6,7 +6,9 @@ import com.financeit.web.repositories.ClientRepository;
 import com.financeit.web.repositories.TransactionRepository;
 import com.financeit.web.service.PendingTransactionService;
 import com.financeit.web.service.TOTPService;
+import com.financeit.web.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -29,22 +31,32 @@ public class TransactionController {
     private TOTPService totpService;
     @Autowired
     private PendingTransactionService pendingTransactionService;
+    @Autowired
+    private TransactionService transactionService;
 
     @Autowired
-    public TransactionController(PendingTransactionService pendingTransactionService) {
+    public TransactionController(PendingTransactionService pendingTransactionService, TOTPService totpService) {
         this.pendingTransactionService = pendingTransactionService;
+        this.totpService = totpService;
     }
 
 
     @PostMapping("/transactions")
     public ResponseEntity<?> makePendingTransaction(@RequestParam("fromAccountNumber") String accountFromNumber,
-                                                  @RequestParam("toAccountNumber") String accountToNumber,
-                                                  @RequestParam("amount") Double amount,
-                                                  @RequestParam("description") String description,
-                                                  Authentication authentication) {
+                                                    @RequestParam("toAccountNumber") String accountToNumber,
+                                                    @RequestParam("amount") Double amount,
+                                                    @RequestParam("description") String description,
+                                                    Authentication authentication) {
         return pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
     }
+
+    @PostMapping("/transactions/validate")
+    public ResponseEntity<?> makeTransaction(@RequestParam("dynamicPassword") String passwordTOTP,
+                                             Authentication authentication) {
+        return transactionService.makeTransaction(passwordTOTP, authentication);
+    }
+
 
     @GetMapping("/transactions")
     public List<TransactionDTO> getTransactions() {
