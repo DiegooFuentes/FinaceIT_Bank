@@ -11,7 +11,8 @@ var app = new Vue({
         transferType: "own",
         amount: 0,
         description: "",
-        passwordTOTP: ""
+        passwordTOTP: "",
+        prompt: ""
     },
     methods:{
         getData: function(){
@@ -94,6 +95,16 @@ var app = new Vue({
                     this.errorToats.show();
                 })
         },
+        sendPrompt: function() {
+            axios.post(`/api/questions/send?message=${this.prompt}`)
+                .then(response => {
+                     this.modal.show();
+                })
+                .catch((error) =>{
+                     this.errorMsg = error.response.data;
+                     this.errorToats.show();
+                })
+        }
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
