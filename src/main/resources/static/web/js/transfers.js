@@ -11,7 +11,8 @@ var app = new Vue({
         transferType: "own",
         amount: 0,
         description: "",
-        passwordTOTP: ""
+        passwordTOTP: "",
+        loading: false // Variable de estado para controlar la carga
     },
     methods:{
         getData: function(){
@@ -48,6 +49,12 @@ var app = new Vue({
             }
         },
         transfer: function(){
+            if(this.loading){
+                return; // Si ya está cargando, no hacer nada
+            }
+
+            this.loading = true;
+
             let config = {
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded'
@@ -61,6 +68,9 @@ var app = new Vue({
                     this.errorMsg = error.response.data;
                     this.errorToats.show();
                 })
+                .finally(() => {
+                    this.loading = false; // Restablecer la variable de estado como no cargando
+                });
         },
         validateOTP: function() {
             axios.post(`/api/transactions/validate?dynamicPassword=${this.passwordTOTP}`)
