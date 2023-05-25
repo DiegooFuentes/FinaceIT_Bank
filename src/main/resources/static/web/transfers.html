@@ -109,6 +109,8 @@
                             </div>
                             <button type="button" v-on:click="checkTransfer" class="btn btn-sm btn-outline-success mt-4">transfer</button>
                         </form>
+                        <input id="prompt" v-model="prompt" type="text" placeholder="" >
+                        <button type="button" v-on:click="sendPrompt" class="btn btn-sm btn-outline-success mt-4">ChatTransfer</button>
                     </div>
                 </div>
             </div>

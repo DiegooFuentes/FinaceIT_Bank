@@ -12,6 +12,7 @@ var app = new Vue({
         amount: 0,
         description: "",
         passwordTOTP: "",
+        prompt: "",
         loading: false // Variable de estado para controlar la carga
     },
     methods:{
@@ -104,6 +105,16 @@ var app = new Vue({
                     this.errorToats.show();
                 })
         },
+        sendPrompt: function() {
+            axios.post(`/api/questions/send?message=${this.prompt}`)
+                .then(response => {
+                     this.modal.show();
+                })
+                .catch((error) =>{
+                     this.errorMsg = error.response.data;
+                     this.errorToats.show();
+                })
+        }
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
