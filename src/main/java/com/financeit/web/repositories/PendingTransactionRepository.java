@@ -12,4 +12,7 @@ public interface PendingTransactionRepository extends JpaRepository<PendingTrans
    /* PendingTransaction findByPassword(String password);*/
     PendingTransaction findByEmail(String email);
 
+    void deleteByLocalDateTimeTOTPBefore(LocalDateTime cutoffTime);
+
+
 }

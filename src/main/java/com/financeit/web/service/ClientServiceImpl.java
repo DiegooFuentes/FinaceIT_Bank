@@ -5,6 +5,7 @@ import com.financeit.web.models.Account;
 import com.financeit.web.models.Client;
 import com.financeit.web.repositories.AccountRepository;
 import com.financeit.web.repositories.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class ClientServiceImpl implements ClientService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
+    @Autowired
     public ClientServiceImpl(ClientRepository clientRepository, PasswordEncoder passwordEncoder, AccountRepository accountRepository) {
         this.clientRepository = clientRepository;
         this.passwordEncoder = passwordEncoder;

@@ -4,6 +4,10 @@ const app = new Vue({
         clientInfo: {},
         errorToats: null,
         errorMsg: null,
+        uf: "",
+        dolar: "",
+        euro: "",
+        utm: "",
     },
     methods:{
         getData: function(){
@@ -36,10 +40,55 @@ const app = new Vue({
                     this.errorMsg = error.response.data;
                     this.errorToats.show();
                 })
-        }
+        },
+        getIndicadorUF: function () {
+              axios
+                .get('/api/indicator/uf')
+                .then((response) => {
+                  this.uf = response.data.serie[0].valor;
+                })
+                .catch((error) => {
+                  this.errorMsg = 'Error getting UF indicator';
+                  this.errorToats.show();
+                });
+        },
+        getIndicadorDolar: function() {
+              axios.get("/api/indicator/dolar")
+                .then((response) => {
+                  this.dolar = response.data.serie[0].valor;
+                })
+                .catch((error) => {
+                  this.errorMsg = "Error getting Dolar indicator";
+                  this.errorToats.show();
+                });
+            },
+            getIndicadorEuro: function() {
+              axios.get("/api/indicator/euro")
+                .then((response) => {
+                  this.euro = response.data.serie[0].valor;
+                })
+                .catch((error) => {
+                  this.errorMsg = "Error getting Euro indicator";
+                  this.errorToats.show();
+                });
+            },
+            getIndicadorUTM: function() {
+              axios.get("/api/indicator/utm")
+                .then((response) => {
+                  this.utm = response.data.serie[0].valor;
+                })
+                .catch((error) => {
+                  this.errorMsg = "Error getting UTM indicator";
+                  this.errorToats.show();
+                });
+            },
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
         this.getData();
+        this.getIndicadorUF();
+        this.getIndicadorDolar();
+        this.getIndicadorEuro();
+        this.getIndicadorUTM();
     }
 })
