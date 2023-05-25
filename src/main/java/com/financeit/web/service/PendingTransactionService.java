@@ -57,6 +57,11 @@ public class PendingTransactionService {
         if (sourceAccount.getBalance() < amount) {
             return new ResponseEntity<>("Insufficient balance in the source account.", HttpStatus.FORBIDDEN);
         }
+        if (pendingTransactionRepository.findByEmail(authentication.getName()) != null) {
+            return new ResponseEntity<>("There is a pending transaction for a current client.", HttpStatus.FORBIDDEN);
+        }
+
+
         LocalDateTime totpDate = TOTPService.generateDateTOTP();
         String totpPassword = TOTPService.generatePasswordTOTP();
 

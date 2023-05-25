@@ -11,7 +11,9 @@ var app = new Vue({
         transferType: "own",
         amount: 0,
         description: "",
-        passwordTOTP: ""
+        passwordTOTP: "",
+        prompt: "",
+        loading: false // Variable de estado para controlar la carga
     },
     methods:{
         getData: function(){
@@ -48,6 +50,12 @@ var app = new Vue({
             }
         },
         transfer: function(){
+            if(this.loading){
+                return; // Si ya está cargando, no hacer nada
+            }
+
+            this.loading = true;
+
             let config = {
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded'
@@ -61,6 +69,9 @@ var app = new Vue({
                     this.errorMsg = error.response.data;
                     this.errorToats.show();
                 })
+                .finally(() => {
+                    this.loading = false; // Restablecer la variable de estado como no cargando
+                });
         },
         validateOTP: function() {
             axios.post(`/api/transactions/validate?dynamicPassword=${this.passwordTOTP}`)
@@ -94,6 +105,16 @@ var app = new Vue({
                     this.errorToats.show();
                 })
         },
+        sendPrompt: function() {
+            axios.post(`/api/questions/send?message=${this.prompt}`)
+                .then(response => {
+                     this.modal.show();
+                })
+                .catch((error) =>{
+                     this.errorMsg = error.response.data;
+                     this.errorToats.show();
+                })
+        }
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));

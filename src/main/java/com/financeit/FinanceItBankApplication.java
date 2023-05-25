@@ -1,9 +1,21 @@
 package com.financeit;
 
+import com.financeit.web.models.*;
+import com.financeit.web.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootApplication
+@EnableScheduling
 public class FinanceItBankApplication {
 
 	public static void main(String[] args) {
@@ -25,7 +37,7 @@ public class FinanceItBankApplication {
 			debitTransaction(2000.0,"New Car",LocalDateTime.now(),melbaAcc2);
 			debitTransaction(340.0,"Gas",LocalDateTime.now(),melbaAcc2);
 
-			Client diego = createClient("Diego","Fuentes","diego@mindhub.com","123");
+			Client diego = createClient("Diego","Fuentes","edison.d.barra@gmail.com","123");
 			Account diegoAcct1 = createAccount("VIN003",LocalDateTime.now(),8560.0,diego);
 			debitTransaction(200.0,"New Phone",LocalDateTime.now(),diegoAcct1);
 			creditTransaction(24.0,"Dinner",LocalDateTime.now(),diegoAcct1);
