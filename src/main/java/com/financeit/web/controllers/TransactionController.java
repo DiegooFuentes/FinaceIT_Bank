@@ -1,23 +1,25 @@
 package com.financeit.web.controllers;
 
+import com.financeit.web.dtos.AccountDTO;
 import com.financeit.web.dtos.TransactionDTO;
-import com.financeit.web.repositories.AccountRepository;
-import com.financeit.web.repositories.ClientRepository;
-import com.financeit.web.repositories.PendingTransactionRepository;
-import com.financeit.web.repositories.TransactionRepository;
-import com.financeit.web.service.EmailNotificationService;
-import com.financeit.web.service.PendingTransactionService;
-import com.financeit.web.service.TOTPService;
-import com.financeit.web.service.TransactionService;
+import com.financeit.web.dtos.TransactionLinkDTO;
+import com.financeit.web.models.Account;
+import com.financeit.web.models.Client;
+import com.financeit.web.models.TransactionLink;
+import com.financeit.web.repositories.*;
+import com.financeit.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static com.financeit.web.utils.CardUtil.generateRandomNumber;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -40,6 +42,8 @@ public class TransactionController {
     private EmailNotificationService emailNotificationService;
     @Autowired
     private PendingTransactionRepository pendingTransactionRepository;
+    @Autowired
+    private TransactionLinkRepository transactionLinkRepository;
 
     @Autowired
     public TransactionController(PendingTransactionService pendingTransactionService, TOTPService totpService) {
@@ -55,10 +59,10 @@ public class TransactionController {
                                                     @RequestParam("description") String description,
                                                     Authentication authentication) {
 
-        ResponseEntity<?> reponse = pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
+        ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
         emailNotificationService.sendNotification(authentication.getName());
-        return reponse;
+        return response;
     }
 
     @PostMapping("/transactions/validate")
@@ -77,5 +81,57 @@ public class TransactionController {
     @GetMapping("/transactions/{id}")
     public TransactionDTO getTransaction(@PathVariable Long id) {
         return transactionRepository.findById(id).map(TransactionDTO::new).orElse(null);
+    }
+
+    @PostMapping("/transactions/get_link")
+    public ResponseEntity<String> makeLinkOfTransaction (@RequestBody TransactionLinkDTO transactionLinkDTO,
+                                                    Authentication authentication){
+
+        String linkCode = generateRandomNumber(21);
+
+        String baseUrl = "http://localhost:8080"; // "http://your-domain.com"; // Replace with your base URL
+        String endpoint = "/api/transactions/pay_with_link"; // + linkCode; // Replace with your endpoint
+
+        String generatedLink = UriComponentsBuilder
+                .fromHttpUrl(baseUrl)
+                .path(endpoint)
+                .toUriString();
+
+        Account destinationAccount = accountRepository.findByNumber(transactionLinkDTO.getDestinationAccount());
+        TransactionLink transactionLink = new TransactionLink(destinationAccount.getNumber(), transactionLinkDTO.getAmount(),
+                transactionLinkDTO.getDescription(),linkCode, generatedLink);
+        destinationAccount.setTransactionLink(transactionLink);
+        transactionLinkRepository.save(transactionLink);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/transactions/get_link")
+    public ResponseEntity<String> generateLink(@RequestParam("destinationAccount") String destinationAccount,
+                                               Authentication authentication) {
+
+        Client client = clientRepository.findByEmail(authentication.getName());
+        Account account = accountRepository.findByNumber(destinationAccount);
+        TransactionLink transactionLink = account.getTransactionLink();
+        String code = transactionLink.getLinkCode();
+        String link = transactionLink.getLink();
+
+        return ResponseEntity.ok(link + code);
+    }
+
+    @GetMapping("/transactions/pay_with_link/{linkCode}")
+    public ResponseEntity<?> payWithLink (@PathVariable String linkCode,
+                                          @RequestParam("fromAccountNumber") String accountFromNumber,
+                                          Authentication authentication){
+
+
+        TransactionLink link = transactionLinkRepository.findByLinkCode(linkCode);
+
+        ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(accountFromNumber, link.getDestinationAccount(),
+                link.getAmount(), link.getDescription(), authentication);
+        emailNotificationService.sendNotification(authentication.getName());
+        return response;
+
     }
 }

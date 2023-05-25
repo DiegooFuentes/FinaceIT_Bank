@@ -62,6 +62,18 @@ public class Account {
         this.balance = balance;
     }
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "transactionLink_id", referencedColumnName = "id")
+    private TransactionLink transactionLink;
+
+    public TransactionLink getTransactionLink() {
+        return transactionLink;
+    }
+
+    public void setTransactionLink(TransactionLink transactionLink) {
+        this.transactionLink = transactionLink;
+    }
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="client_id")
     private Client client;
