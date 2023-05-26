@@ -26,29 +26,29 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/api")
 public class TransactionController {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private TOTPService totpService;
-    @Autowired
-    private PendingTransactionService pendingTransactionService;
-    @Autowired
-    private TransactionService transactionService;
-    @Autowired
-    private EmailNotificationService emailNotificationService;
-    @Autowired
-    private PendingTransactionRepository pendingTransactionRepository;
-    @Autowired
-    private TransactionLinkRepository transactionLinkRepository;
+    private final PendingTransactionService pendingTransactionService;
+    private final EmailNotificationService emailNotificationService;
+    private final TransactionService transactionService;
+    private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
+    private final TransactionLinkRepository transactionLinkRepository;
 
     @Autowired
-    public TransactionController(PendingTransactionService pendingTransactionService, TOTPService totpService) {
+    public TransactionController(PendingTransactionService pendingTransactionService,
+                                 EmailNotificationService emailNotificationService,
+                                 TransactionService transactionService,
+                                 TransactionRepository transactionRepository,
+                                 AccountRepository accountRepository,
+                                 ClientRepository clientRepository,
+                                 TransactionLinkRepository transactionLinkRepository) {
         this.pendingTransactionService = pendingTransactionService;
-        this.totpService = totpService;
+        this.emailNotificationService = emailNotificationService;
+        this.transactionService = transactionService;
+        this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
+        this.clientRepository = clientRepository;
+        this.transactionLinkRepository = transactionLinkRepository;
     }
 
     @Transactional
@@ -61,8 +61,12 @@ public class TransactionController {
 
         ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
-        emailNotificationService.sendNotification(authentication.getName());
-        return response;
+        if(response.getStatusCode().equals(HttpStatus.CREATED)){
+            emailNotificationService.sendNotification(authentication.getName());
+            return response;
+        }else {
+            return response;
+        }
     }
 
     @PostMapping("/transactions/validate")
