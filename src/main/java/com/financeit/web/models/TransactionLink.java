@@ -22,7 +22,8 @@ public class TransactionLink {
 
     private String link;
 
-    @OneToOne(mappedBy = "transactionLink")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     public Account getAccount() {

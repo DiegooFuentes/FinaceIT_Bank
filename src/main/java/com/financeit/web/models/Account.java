@@ -62,18 +62,6 @@ public class Account {
         this.balance = balance;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "transactionLink_id", referencedColumnName = "id")
-    private TransactionLink transactionLink;
-
-    public TransactionLink getTransactionLink() {
-        return transactionLink;
-    }
-
-    public void setTransactionLink(TransactionLink transactionLink) {
-        this.transactionLink = transactionLink;
-    }
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="client_id")
     private Client client;
@@ -99,5 +87,16 @@ public class Account {
         transactions.add(transaction);
     }
 
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    Set<TransactionLink> transactionLinks = new HashSet<>();
+
+    public Set<TransactionLink> getTransactionLinks() {
+        return transactionLinks;
+    }
+
+    public void addTransactionLink(TransactionLink transactionLink){
+        transactionLink.setAccount(this);
+        transactionLinks.add(transactionLink);
+    }
 
 }
