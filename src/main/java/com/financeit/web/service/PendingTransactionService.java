@@ -19,12 +19,18 @@ import java.time.LocalDateTime;
 
 @Service
 public class PendingTransactionService {
+    private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
+    private final PendingTransactionRepository pendingTransactionRepository;
+
     @Autowired
-    private PendingTransactionRepository pendingTransactionRepository;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private ClientRepository clientRepository;
+    public PendingTransactionService(AccountRepository accountRepository,
+                                     ClientRepository clientRepository,
+                                     PendingTransactionRepository pendingTransactionRepository) {
+        this.accountRepository = accountRepository;
+        this.clientRepository = clientRepository;
+        this.pendingTransactionRepository = pendingTransactionRepository;
+    }
 
 
     @Transactional

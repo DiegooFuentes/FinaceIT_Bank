@@ -26,29 +26,29 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/api")
 public class TransactionController {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private TOTPService totpService;
-    @Autowired
-    private PendingTransactionService pendingTransactionService;
-    @Autowired
-    private TransactionService transactionService;
-    @Autowired
-    private EmailNotificationService emailNotificationService;
-    @Autowired
-    private PendingTransactionRepository pendingTransactionRepository;
-    @Autowired
-    private TransactionLinkRepository transactionLinkRepository;
+    private final PendingTransactionService pendingTransactionService;
+    private final EmailNotificationService emailNotificationService;
+    private final TransactionService transactionService;
+    private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
+    private final TransactionLinkRepository transactionLinkRepository;
 
     @Autowired
-    public TransactionController(PendingTransactionService pendingTransactionService, TOTPService totpService) {
+    public TransactionController(PendingTransactionService pendingTransactionService,
+                                 EmailNotificationService emailNotificationService,
+                                 TransactionService transactionService,
+                                 TransactionRepository transactionRepository,
+                                 AccountRepository accountRepository,
+                                 ClientRepository clientRepository,
+                                 TransactionLinkRepository transactionLinkRepository) {
         this.pendingTransactionService = pendingTransactionService;
-        this.totpService = totpService;
+        this.emailNotificationService = emailNotificationService;
+        this.transactionService = transactionService;
+        this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
+        this.clientRepository = clientRepository;
+        this.transactionLinkRepository = transactionLinkRepository;
     }
 
     @Transactional
@@ -61,8 +61,12 @@ public class TransactionController {
 
         ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
-        emailNotificationService.sendNotification(authentication.getName());
-        return response;
+        if(response.getStatusCode().equals(HttpStatus.CREATED)){
+            emailNotificationService.sendNotification(authentication.getName());
+            return response;
+        }else {
+            return response;
+        }
     }
 
     @PostMapping("/transactions/validate")
@@ -83,55 +87,4 @@ public class TransactionController {
         return transactionRepository.findById(id).map(TransactionDTO::new).orElse(null);
     }
 
-    @PostMapping("/transactions/get_link")
-    public ResponseEntity<String> makeLinkOfTransaction (@RequestBody TransactionLinkDTO transactionLinkDTO,
-                                                    Authentication authentication){
-
-        String linkCode = generateRandomNumber(21);
-
-        String baseUrl = "http://localhost:8080"; // "http://your-domain.com"; // Replace with your base URL
-        String endpoint = "/api/transactions/pay_with_link"; // + linkCode; // Replace with your endpoint
-
-        String generatedLink = UriComponentsBuilder
-                .fromHttpUrl(baseUrl)
-                .path(endpoint)
-                .toUriString();
-
-        Account destinationAccount = accountRepository.findByNumber(transactionLinkDTO.getDestinationAccount());
-        TransactionLink transactionLink = new TransactionLink(destinationAccount.getNumber(), transactionLinkDTO.getAmount(),
-                transactionLinkDTO.getDescription(),linkCode, generatedLink);
-        destinationAccount.setTransactionLink(transactionLink);
-        transactionLinkRepository.save(transactionLink);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-
-    @GetMapping("/transactions/get_link")
-    public ResponseEntity<String> generateLink(@RequestParam("destinationAccount") String destinationAccount,
-                                               Authentication authentication) {
-
-        Client client = clientRepository.findByEmail(authentication.getName());
-        Account account = accountRepository.findByNumber(destinationAccount);
-        TransactionLink transactionLink = account.getTransactionLink();
-        String code = transactionLink.getLinkCode();
-        String link = transactionLink.getLink();
-
-        return ResponseEntity.ok(link + code);
-    }
-
-    @GetMapping("/transactions/pay_with_link/{linkCode}")
-    public ResponseEntity<?> payWithLink (@PathVariable String linkCode,
-                                          @RequestParam("fromAccountNumber") String accountFromNumber,
-                                          Authentication authentication){
-
-
-        TransactionLink link = transactionLinkRepository.findByLinkCode(linkCode);
-
-        ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(accountFromNumber, link.getDestinationAccount(),
-                link.getAmount(), link.getDescription(), authentication);
-        emailNotificationService.sendNotification(authentication.getName());
-        return response;
-
-    }
 }

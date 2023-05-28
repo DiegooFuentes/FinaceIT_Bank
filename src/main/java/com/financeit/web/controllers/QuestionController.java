@@ -26,16 +26,18 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/api/questions")
 public class QuestionController {
+    private final PendingTransactionService pendingTransactionService;
+    private final EmailNotificationService emailNotificationService;
+    private final ChatgptService chatgptService;
+
     @Autowired
-    private ChatgptService chatgptService;
-    @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
-    private PendingTransactionRepository pendingTransactionRepository;
-    @Autowired
-    PendingTransactionService pendingTransactionService;
-    @Autowired
-    EmailNotificationService emailNotificationService;
+    public QuestionController(PendingTransactionService pendingTransactionService,
+                              EmailNotificationService emailNotificationService,
+                              ChatgptService chatgptService) {
+        this.pendingTransactionService = pendingTransactionService;
+        this.emailNotificationService = emailNotificationService;
+        this.chatgptService = chatgptService;
+    }
 
 
 
@@ -45,7 +47,8 @@ public class QuestionController {
     //los datos del json los utilizo para crear una pendingTransaction
     @Transactional
     @PostMapping("/send")
-    public ResponseEntity<?> chatTransaction(@RequestParam String message, Authentication authentication) {
+    public ResponseEntity<?> chatTransaction(@RequestParam String message,
+                                             Authentication authentication) {
         String prompt = "Genera solo el código que representa un JSON con las instrucciones que te entregaré a continuación.\n" +
                 "El formato que debe representar ese JSON en el Backend es el de la entidad PendingTransaction con el siguiente código:\n" +
                 " “  private TransactionType type;\n" +
@@ -125,8 +128,14 @@ public class QuestionController {
 
         ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(accountFromNumber, accountToNumber,
                 amount, description, authentication);
-        emailNotificationService.sendNotification(authentication.getName());
+        if(response.getStatusCode().equals(HttpStatus.CREATED)){
+            emailNotificationService.sendNotification(authentication.getName());
+            return response;
+        }else {
+            return response;
+        }
 
-        return response;
+
+
     }
 }

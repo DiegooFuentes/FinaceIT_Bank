@@ -24,12 +24,16 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
                 .antMatchers("/web/js/index.js").permitAll()
                 .antMatchers("/web/css/style.css").permitAll()
                 .antMatchers("/web/css/", "/web/img/", "/web/js/").permitAll()
+                .antMatchers("/web/pay-link.html/").permitAll()
+
                 .antMatchers(HttpMethod.POST,"/api/clients/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/clients/current/cards").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.GET,"/api/clients/current/accounts").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST,"/api/transactions").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST,"/api/loans").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.GET,"/api/loans").hasAuthority("CLIENT")
+
+                .antMatchers(HttpMethod.GET,"/api/transactions/payment_link").permitAll()
 
                 .antMatchers(HttpMethod.GET,"/api/transactions/pay_with_link/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/transactions/pay_with_link/{linkCode}").permitAll()

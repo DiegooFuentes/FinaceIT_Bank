@@ -82,6 +82,14 @@ const app = new Vue({
                   this.errorToats.show();
                 });
             },
+            formatNumber: function(number) {
+                  return Number(number).toLocaleString('es-CL', {
+                  style: 'currency',
+                  currency: 'CLP',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  });
+                },
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));

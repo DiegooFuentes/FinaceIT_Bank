@@ -57,7 +57,7 @@ public class TransactionService {
         destinationAccount.setBalance(destinationAccount.getBalance() + pendingTransaction.getAmount());
         accountRepository.save(sourceAccount);
         accountRepository.save(destinationAccount);
-
+        pendingTransactionRepository.deleteByEmail(authentication.getName());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
