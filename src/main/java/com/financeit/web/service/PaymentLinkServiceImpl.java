@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 @Service
@@ -28,29 +30,26 @@ public class PaymentLinkServiceImpl implements PaymentLinkService{
     }
 
     @Override
-    public ResponseEntity<?> generatePaymentLink(String destinationAccount, double amount, String description, Authentication authentication) {
+    public ResponseEntity<?> generatePaymentLink(String destinationAccount, double amount, String description, Authentication authentication) throws URISyntaxException {
 
         UUID linkId = UUID.randomUUID();
         String linkCode = linkId.toString();
 
-        String baseUrl = "http://localhost:8080"; // "http://your-domain.com"; //
-        String endpoint = "/pay-link.html/?linkCode=";
-        //String endpoint = "/api/transactions/pay_with_link/"; // + linkCode; //
 
-        String generatedLink = UriComponentsBuilder
-                .fromHttpUrl(baseUrl)
-                .path(endpoint)
-                .path(linkCode)
-                .toUriString();
+        String baseUrl = "http://localhost:8080/web/pay-link.html";
+        URI uri = new URI(baseUrl);
+        String query = String.format("linkCode=%s", linkCode);
+        URI linkUri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), query, null);
+        String url = linkUri.toString();
 
         Account account = accountRepository.findByNumber(destinationAccount);
         Client client = clientRepository.findByEmail(authentication.getName());
 
         if (account.getClient().equals(client)){
-            TransactionLink transactionLink = new TransactionLink(destinationAccount, amount, description, linkCode, generatedLink);
+            TransactionLink transactionLink = new TransactionLink(destinationAccount, amount, description, linkCode, url);
             account.addTransactionLink(transactionLink);
             transactionLinkRepository.save(transactionLink);
-            return ResponseEntity.ok(generatedLink);
+            return ResponseEntity.ok(url);
         }
         else{
             return new ResponseEntity<>("Verifica la cuenta seleccionada", HttpStatus.FORBIDDEN);
