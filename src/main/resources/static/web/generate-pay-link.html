@@ -130,7 +130,10 @@
                     <button v-on:click="copyContent">Copy</button>
 
                     <div class="share-buttons">
-                        <a :href="getWhatsAppShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">WhatsApp</a>
+                        <a :href="getWhatsAppShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Compartir en WhatsApp</a>
+                    </div>
+                    <div>
+                        <img :src="qrCodeUrl" alt="QR Code">
                     </div>
 
                 </div>
