@@ -56,7 +56,7 @@ var app = new Vue({
         },
         getWhatsAppShareLink() {
             // Replace the placeholders with your actual values
-            const customText = `¡Finace it Bank ha generado un link de pago para que puedas realizarlo más fácilmente! Ingresa aquí para usarlo:`;
+            const customText = `¡Finace it Bank ha generado un link de pago para que puedas realizarlo más fácilmente! Ingresa aquí para usarlo: `;
             const message = `${customText}${this.link}`;
             const encodedMessage = encodeURIComponent(message);
             return `https://wa.me/?text=${encodeURIComponent(message)}`;
