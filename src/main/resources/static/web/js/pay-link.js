@@ -1,6 +1,7 @@
 var app = new Vue({
     el:"#app",
     data:{
+        clientInfo: {},
         clientAccounts: [],
         clientAccountsTo: [],
         debitCards: [],

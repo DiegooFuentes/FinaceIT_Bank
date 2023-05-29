@@ -1,6 +1,7 @@
 const app = new Vue({
     el:'#app',
     data:{
+        clientInfo: {},
         accountInfo: {},
         errorToats: null,
         errorMsg: null,
@@ -31,6 +32,18 @@ const app = new Vue({
                     this.errorMsg = "Sign out failed"
                     this.errorToats.show();
                 })
+        },
+        getCLientInfo: function(){
+                    axios.get("/api/clients/current")
+                        .then((response) => {
+                            //get client ifo
+                            this.clientInfo = response.data;
+                        })
+                        .catch((error)=>{
+                            // handle error
+                            this.errorMsg = "Error getting data";
+                            this.errorToats.show();
+                        })
         },
     },
     mounted: function(){

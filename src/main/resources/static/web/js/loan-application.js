@@ -1,6 +1,7 @@
 var app = new Vue({
     el:"#app",
     data:{
+        clientInfo: {},
         loanTypes: [],
         loanTypeId: 0,
         payments: 0,

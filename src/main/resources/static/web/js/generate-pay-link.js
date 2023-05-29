@@ -1,6 +1,7 @@
 var app = new Vue({
     el:"#app",
     data:{
+        clientInfo: {},
         clientAccounts: [],
         clientAccountsTo: [],
         debitCards: [],
@@ -24,6 +25,18 @@ var app = new Vue({
                     this.clientAccounts = response.data;
                 })
                 .catch((error) => {
+                    this.errorMsg = "Error getting data";
+                    this.errorToats.show();
+                })
+        },
+        getCLientInfo: function(){
+            axios.get("/api/clients/current")
+                .then((response) => {
+                    //get client ifo
+                    this.clientInfo = response.data;
+                })
+                .catch((error)=>{
+                    // handle error
                     this.errorMsg = "Error getting data";
                     this.errorToats.show();
                 })
