@@ -28,6 +28,10 @@ var app = new Vue({
                     this.errorToats.show();
                 })
         },
+        redirectToLogin() {
+            // Redirect to the login page
+            this.$router.push('/login');
+        },
         formatDate: function(date){
             return new Date(date).toLocaleDateString('en-gb');
         },
@@ -52,6 +56,13 @@ var app = new Vue({
             textarea.select();
             document.execCommand('copy');
             alert('¡Link de pago copiado!');
+        },
+        getWhatsAppShareLink() {
+            // Replace the placeholders with your actual values
+            const customText = 'Check out this awesome link: ';
+            const message = `${customText}${this.link}`;
+            const encodedMessage = encodeURIComponent(message);
+            return `https://wa.me/?text=${encodeURIComponent(message)}`;
         },
         transfer: function(){
             if(this.loading){
