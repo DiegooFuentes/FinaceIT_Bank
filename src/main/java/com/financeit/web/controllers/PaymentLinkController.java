@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.net.URISyntaxException;
 
 
 @RestController
@@ -28,12 +29,12 @@ public class PaymentLinkController {
 
 
     @GetMapping("/transactions/payment_link")
-    public ResponseEntity<?> generatePaymentLink(@RequestParam("destinationAccount") String destinationAccount,
+    public ResponseEntity<?> generatePaymentLink(@RequestParam("fromAccountNumber") String fromAccountNumber,
                                                  @RequestParam("amount") double amount,
                                                  @RequestParam("description") String description,
-                                                 Authentication authentication) {
+                                                 Authentication authentication) throws URISyntaxException {
 
-        return paymentLinkServiceImpl.generatePaymentLink(destinationAccount, amount, description, authentication);
+        return paymentLinkServiceImpl.generatePaymentLink(fromAccountNumber, amount, description, authentication);
 
     }
 
