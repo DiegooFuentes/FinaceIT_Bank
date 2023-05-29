@@ -14,7 +14,8 @@ var app = new Vue({
         passwordTOTP: "",
         prompt: "",
         loading: false, // Variable de estado para controlar la carga
-        link: []
+        link: [],
+        qrCodeUrl: ''
     },
     methods:{
         getData: function(){
@@ -27,10 +28,6 @@ var app = new Vue({
                     this.errorMsg = "Error getting data";
                     this.errorToats.show();
                 })
-        },
-        redirectToLogin() {
-            // Redirect to the login page
-            this.$router.push('/login');
         },
         formatDate: function(date){
             return new Date(date).toLocaleDateString('en-gb');
@@ -59,10 +56,31 @@ var app = new Vue({
         },
         getWhatsAppShareLink() {
             // Replace the placeholders with your actual values
-            const customText = 'Check out this awesome link: ';
+            const customText = `¡Finace it Bank ha generado un link de pago para que puedas realizarlo más fácilmente! Ingresa aquí para usarlo:`;
             const message = `${customText}${this.link}`;
             const encodedMessage = encodeURIComponent(message);
             return `https://wa.me/?text=${encodeURIComponent(message)}`;
+        },
+        generateQRCode() {
+            const linkQr = this.link; // Get the link from the "link" variable
+
+            axios
+                .get(`/api/generate_qr_code?linkQr=${encodeURIComponent(linkQr)}`, {
+                    responseType: 'arraybuffer' // Set the response type to arraybuffer
+                })
+                .then(response => {
+                    const qrCodeBase64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    );
+                    this.qrCodeUrl = 'data:image/png;base64,' + qrCodeBase64;
+                })
+                .catch(error => {
+                    this.errorMsg = 'Error generating QR code';
+                    this.errorToats.show();
+                });
         },
         transfer: function(){
             if(this.loading){
@@ -79,6 +97,7 @@ var app = new Vue({
             axios.get(`/api/transactions/payment_link?fromAccountNumber=${this.accountFromNumber}&amount=${this.amount}&description=${this.description}`,config)
                 .then(response => {
                     this.link = response.data;
+                    this.generateQRCode(); ////GENERAR QR
                     this.okmodal.show();
                 })
                 .catch((error) =>{
