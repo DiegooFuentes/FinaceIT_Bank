@@ -1,71 +1,227 @@
-.account{
-    background: linear-gradient(45deg,#000,#0000);
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Montserrat:ital,wght@0,500;0,600;1,600&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400%7CPoppins:300,400,800&display=swap");
+
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    color: black;
+    /* background-color: #FAFAFB; */
+    background-color: #FFFFFF;
+}
+
+#app {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+nav {
+    height: 100%;
+    background-color: #286FB9;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    height: 100vh;
+    width: 85%;
+    color: #101828;
+}
+
+ul {
+    width: 90%;
+}
+
+li {
+    background-color: #225EA7;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+li:hover {
+    background-color: #3e73b3;
+}
+
+a:hover {
+    color: #101828;
+}
+
+.nav-link {
     color: white;
-    box-shadow: 1px 1px 5px black;
+    margin-left: 10px;
 }
 
-.account:hover{
-    box-shadow: 2px 2px 10px black;
+header {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #EAECF0;
 }
 
-.account-details-header{
-    background: linear-gradient(45deg,#000000f0,#00000069);
+.greeting {
+    margin-left: 10%;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.user-info {
+    margin-right: 10%;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.signOut {
+    background-color: #286FB9;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    padding: 5px 10px 5px 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     color: white;
 }
 
-.account-balance{
-    font-size: 2em;
+section {
+    margin: 5%;
+}
+
+.topside {
+    display: flex;
+    flex-direction: column;
+}
+
+.section-container {
+    width: 100%;
+}
+
+.section-top {
+    display: flex;
+    gap: 10px;
+}
+
+#create {
+    background-color: #F4F5F7;
+    height: 35px;
+}
+
+#create:hover {
+    background-color: rgb(187, 187, 187);
+}
+
+.loans-container {
+    display: flex;
+    width: 50%;
+}
+
+.botside {
+    display: flex;
+    flex-direction: column;
+}
+
+.indicators {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.accounts-bot {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.accounts {
+    width: 250px;
+    background-color: #F4F5F7;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.account {
+    color: #101828;
+}
+
+.account:hover {
+    box-shadow: 2px 2px 10px lightgrey;
+}
+
+.section-details-header {
+    background: linear-gradient(45deg, #000000f0, #00000069);
+    color: white;
+}
+
+.balance {
+    font-size: 36px;
+    font-weight: 700;
     margin: 0px;
 }
 
-.account-link{
+.account-link {
     text-decoration: none;
 }
 
-.subtitle {
-    display: inline;
+.indicator-body {
+    background-color: #F4F5F7;
+    width: 20%;
+    padding-top: 20px;
+    border-radius: 15px;
 }
 
-#create{
-    margin-bottom: 15px;
+.indicator-title {
+    margin-left: 20px;
 }
 
-.credit-transaction{
-    color: green;
+.contenedor-imagen {
+    width: 90%;
+    height: 80%;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 5px;
 }
 
-.debit-transaction{
-    color: red;
-}
-
-.loan{
-    background: linear-gradient(45deg,#000000f2,#dc3a35);
-    color: white;
-}
-
-.menu-logo{
-    width: 100%;
+.imagen-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-35%);
+    width: auto;
     height: 100%;
 }
 
-.welcome{
-    background: linear-gradient(45deg,#ee0979,#ff6a00);
+.imagen-container img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
 }
 
-.welcome-logo{
-    width: 60%;
+.indicators-head {
+    margin-bottom: 40px;
 }
 
-.index-body{
-    background-image: url(../img/orange_bg.jpg);
-    background-size: cover;
-    background-attachment: fixed;
+.account-info {
+    margin-bottom: 100px;
 }
 
-.index-container{
-    margin-top: 10%;
+.credit-transaction {
+    color: green;
 }
 
-.w-100 {
-    width: 100%;
+.debit-transaction {
+    color: red;
+}
+
+#prompt {
+    width: 500px
+}
+
+#confirmPasswordLabel {
+    margin-right: 10px;
 }
