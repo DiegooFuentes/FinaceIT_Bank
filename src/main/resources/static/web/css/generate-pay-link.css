@@ -5,3 +5,16 @@
 #description {
     width: 60%;
 }
+
+.all-inside {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    /* Add any styles you want for the container */
+}
+
+.link-box {
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+
+}
+
