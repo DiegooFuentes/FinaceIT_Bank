@@ -42,19 +42,19 @@ public class PaymentLinkController {
     @PostMapping("/transactions/pay_with_link")
     public ResponseEntity<?> payWithLink (@RequestParam("linkCode") String linkCode,
                                           @RequestParam("fromAccountNumber") String fromAccountNumber,
-                                          Authentication authentication){
+                                          Authentication authentication) {
 
-        if(transactionLinkRepository.existsTransactionLinkByLinkCode(linkCode)){
+        if (transactionLinkRepository.existsTransactionLinkByLinkCode(linkCode)) {
             TransactionLink link = transactionLinkRepository.findByLinkCode(linkCode);
 
             ResponseEntity<?> response = pendingTransactionService.makePendingTransaction(fromAccountNumber, link.getDestinationAccount(),
                     link.getAmount(), link.getDescription(), authentication);
-            emailNotificationService.sendNotification(authentication.getName());
+            if (response.getStatusCode().equals(HttpStatus.CREATED)) {
+                emailNotificationService.sendNotification(authentication.getName());
+            }
             return response;
+        } else {
+            return new ResponseEntity<>("Link de pago invalido", HttpStatus.FORBIDDEN);
         }
-        else {
-            return new ResponseEntity<>("Link de pago invalido",HttpStatus.FORBIDDEN);
-        }
-
     }
 }
