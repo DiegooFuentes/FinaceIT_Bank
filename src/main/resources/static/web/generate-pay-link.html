@@ -132,26 +132,25 @@
                 </div>
             </div>
         </div>
-        <!-- Modal 2-->
-        <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="okModalLabel">¡Link de pago generado!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <!-- Modal 2-->
+    <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="okModalLabel">¡Link de pago generado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <textarea v-model="link" rows="4" class="w-100"></textarea>
+                    <br>
+                    <button v-on:click="copyContent">Copy</button>
+
+                    <div class="share-buttons">
+                        <a :href="getWhatsAppShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Compartir en WhatsApp</a>
                     </div>
                     <div>
-                        <textarea v-model="link" rows="4" class="w-100"></textarea>
-                        <br>
-                        <button v-on:click="copyContent">Copy</button>
-                        <!--
-                        <div class="share-buttons">
-                            <a :href="getWhatsAppShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">WhatsApp</a>
-                            <a :href="getFacebookShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Facebook</a>
-                            <a :href="getInstagramShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Instagram</a>
-                             Add more social media share buttons as needed
-                        </div>
-                        -->
+                        <img :src="qrCodeUrl" alt="QR Code">
                     </div>
                 </div>
             </div>
