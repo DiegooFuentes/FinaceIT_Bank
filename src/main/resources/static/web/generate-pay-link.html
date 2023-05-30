@@ -91,7 +91,7 @@
                             <form class="mt-4">
                                 <div class="row mt-3">
                                     <div class="col-md">
-                                        <label for="origin" class="form-label">Cuenta de origen</label>
+                                        <label for="origin" class="form-label">Cuenta de destino</label>
                                         <select id="origin" v-model="accountFromNumber" v-on:change="changedFrom" class="form-select" aria-label="Default select example" required>
                                             <option value="VIN">Selecciona tu cuenta</option>
                                             <option v-for="account in clientAccounts" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
@@ -132,26 +132,30 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Modal 2-->
-    <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="okModalLabel">¡Link de pago generado!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div>
-                    <textarea v-model="link" rows="4" class="w-100"></textarea>
+        <!-- Modal 2-->
+        <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="okModalLabel">¡Link de pago generado!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <br>
-                    <button v-on:click="copyContent">Copy</button>
+                    <div class="all-inside">
+                        <div class="text">
+                            <textarea v-model="link" rows="4" class="w-100" readonly></textarea>
+                            <br>
+                            <button type="button" class="btn btn-outline-secondary" v-on:click="copyContent" >Copiar link</button>
+                            <br>
+                            <a :href="getWhatsAppShareLink()" target="_blank" rel="noopener noreferrer" type="button" class="btn btn-success">Compartir en WhatsApp</a>
 
-                    <div class="share-buttons">
-                        <a :href="getWhatsAppShareLink()" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Compartir en WhatsApp</a>
+                        </div>
+                        <div>
+                            <img  :src="qrCodeUrl" alt="QR Code">
+                        </div>
+
                     </div>
-                    <div>
-                        <img :src="qrCodeUrl" alt="QR Code">
-                    </div>
+
                 </div>
             </div>
         </div>
