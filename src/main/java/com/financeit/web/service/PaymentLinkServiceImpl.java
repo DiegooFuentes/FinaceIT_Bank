@@ -36,7 +36,7 @@ public class PaymentLinkServiceImpl implements PaymentLinkService{
         String linkCode = linkId.toString();
 
 
-        String baseUrl = "http://localhost:8080/web/pay-link.html";
+        String baseUrl = "https://finaceitbank-production.up.railway.app/web/pay-link.html";
         URI uri = new URI(baseUrl);
         String query = String.format("linkCode=%s", linkCode);
         URI linkUri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), query, null);
