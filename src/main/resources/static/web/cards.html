@@ -39,31 +39,31 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li id="accounts-button">
-                    <a href="/web/accounts.html" class="nav-link" id="accounts-button">
+                    <a href="/web/accounts.html" class="nav-link">
                     <i class="bi bi-inboxes"></i>
                     Cuentas
                     </a>
                 </li>
                 <li id="cards-button">
-                    <a href="/web/cards.html" class="nav-link" id="cards-button">
+                    <a href="/web/cards.html" class="nav-link">
                     <i class="bi bi-credit-card"></i>
                     Tarjetas
                     </a>
                 </li>
                 <li id="transfers-button">
-                    <a href="/web/transfers.html" class="nav-link" id="transfers-button">
+                    <a href="/web/transfers.html" class="nav-link">
                     <i class="bi bi-box-arrow-right"></i>
                     Transferencias
                     </a>
                 </li>
                 <li id="pay-link-button">
-                    <a href="/web/generate-pay-link.html" class="nav-link" id="pay-link-button">
+                    <a href="/web/generate-pay-link.html" class="nav-link">
                     <i class="bi bi-link"></i>
                     Link de pago
                     </a>
                 </li>
                 <li id="loan-button">
-                    <a href="/web/loan-application.html" class="nav-link" id="loan-button">
+                    <a href="/web/loan-application.html" class="nav-link">
                     <i class="bi bi-cash"></i>
                     Créditos
                     </a>
@@ -86,10 +86,10 @@
             <section>
                 <div class="col">
                     <div class="row mt-3">
-                        <div class="col">
-                            <h2 class="display-6 subtitle">Debit Cards</h2>
-                            <a v-if="clientInfo.cards != null && clientInfo.cards.length < 6" href="create-cards.html" id="create" class="btn btn-sm btn-outline-success">Create</a>
-                            <div v-if="debitCards.length <= 0"><span class="small">No debit cards</span></div>
+                        <div class="button-create">
+                            <h2 class="display-6 subtitle">Tarjetas de Débito</h2>
+                            <a v-if="clientInfo.cards != null && clientInfo.cards.length < 6" href="create-cards.html" id="create" class="btn btn-sm btn-outline-primary create-card-button">Crear</a>
+                            <div v-if="debitCards.length <= 0"><span class="small">No tiene tarjetas de débito</span></div>
                         </div>
                     </div>
                     <div class="row">
@@ -101,11 +101,11 @@
                                 <img class="plastic-card__front-logo plastic-card__logo" src="">
                                 <p class="plastic-card_numer">{{ card.number}}</p>
                                 <div class="plastic-card__space-60">
-                                    <span class="plastic-card__label">card holder</span>
+                                    <span class="plastic-card__label">cliente</span>
                                     <p class="plastic-card__info">{{ card.cardHolder }}</p>
                                 </div>
                                 <div class="plastic-card__space-25">
-                                    <span class="plastic-card__label">Expires</span>
+                                    <span class="plastic-card__label">Expiración</span>
                                     <p class="plastic-card__info">{{ formatDate(card.thruDate) }}</p>
                                 </div>
                             </div>
@@ -126,8 +126,8 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col">
-                            <h2 class="display-6">Credit Cards</h2>
-                            <span class="small" v-if="creditCards.length <= 0">No credit cards</span>
+                            <h2 class="display-6">Tarjetas de Crédito</h2>
+                            <span class="small" v-if="creditCards.length <= 0">No tiene tarjetas de crédito</span>
                         </div>
                     </div>
                     <div class="row">
@@ -139,11 +139,11 @@
                                 <img class="plastic-card__front-logo plastic-card__logo" src="">
                                 <p class="plastic-card_numer">{{ card.number}}</p>
                                 <div class="plastic-card__space-60">
-                                    <span class="plastic-card__label">card holder</span>
+                                    <span class="plastic-card__label">cliente</span>
                                     <p class="plastic-card__info">{{ card.cardHolder }}</p>
                                 </div>
                                 <div class="plastic-card__space-25">
-                                    <span class="plastic-card__label">Expires</span>
+                                    <span class="plastic-card__label">Expiración</span>
                                     <p class="plastic-card__info">{{ formatDate(card.thruDate) }}</p>
                                 </div>
                             </div>

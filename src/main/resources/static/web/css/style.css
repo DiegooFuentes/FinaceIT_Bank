@@ -46,10 +46,6 @@ li:hover {
     background-color: #3e73b3;
 }
 
-li:active {
-    background-color: #fff;
-}
-
 a:hover {
     color: #101828;
 }
@@ -224,4 +220,8 @@ section {
 
 #prompt {
     width: 500px
+}
+
+#confirmPasswordLabel {
+    margin-right: 10px;
 }

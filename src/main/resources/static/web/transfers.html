@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/logo-style.css">
     <link rel="stylesheet" href="css/transfers.css">
-    <title>Transfer</title>
+    <title>Finance It</title>
 </head>
 <body>
     <div id="app">
@@ -39,33 +39,33 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li id="accounts-button">
-                    <a href="/web/accounts.html" class="nav-link" >
-                    <i class="bi bi-inboxes"></i>
-                    Cuentas
+                    <a href="/web/accounts.html" class="nav-link">
+                        <i class="bi bi-inboxes"></i>
+                        Cuentas
                     </a>
                 </li>
                 <li id="cards-button">
-                    <a href="/web/cards.html" class="nav-link" >
-                    <i class="bi bi-credit-card"></i>
-                    Tarjetas
+                    <a href="/web/cards.html" class="nav-link">
+                        <i class="bi bi-credit-card"></i>
+                        Tarjetas
                     </a>
                 </li>
                 <li id="transfers-button">
-                    <a href="/web/transfers.html" class="nav-link" >
-                    <i class="bi bi-box-arrow-right"></i>
-                    Transferencias
+                    <a href="/web/transfers.html" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Transferencias
                     </a>
                 </li>
                 <li id="pay-link-button">
-                    <a href="/web/generate-pay-link.html" class="nav-link" >
-                    <i class="bi bi-link"></i>
-                    Link de pago
+                    <a href="/web/generate-pay-link.html" class="nav-link">
+                        <i class="bi bi-link"></i>
+                        Link de pago
                     </a>
                 </li>
                 <li id="loan-button">
-                    <a href="/web/loan-application.html" class="nav-link" >
-                    <i class="bi bi-cash"></i>
-                    Créditos
+                    <a href="/web/loan-application.html" class="nav-link">
+                        <i class="bi bi-cash"></i>
+                        Créditos
                     </a>
                 </li>
             </ul>
@@ -87,33 +87,33 @@
                 <div class="col offset-md-1">
                     <div class="row mt-3">
                         <div class="col-10">
-                            <h2 class="display-6 subtitle">Transfer funds</h2>
+                            <h2 class="display-6 subtitle">Transferencia de fondos</h2>
                             <form class="mt-4">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="type" class="form-label">Account type</label>
+                                        <label for="type" class="form-label">Tipo de cuenta</label>
                                         <select id="type" v-model="transferType" v-on:change="changedType" class="form-select" aria-label="Default select example" required>
-                                            <option value="own">Own accounts</option>
-                                            <option value="third">Third party accounts </option>
+                                            <option value="own">Mis cuentas</option>
+                                            <option value="third">A terceros</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md">
-                                        <label for="origin" class="form-label">From account</label>
+                                        <label for="origin" class="form-label">Cuenta de orígen</label>
                                         <select id="origin" v-model="accountFromNumber" v-on:change="changedFrom" class="form-select" aria-label="Default select example" required>
-                                            <option value="VIN">Open this select menu</option>
+                                            <option value="VIN">Abrir menu de selección</option>
                                             <option v-for="account in clientAccounts" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
                                         </select>
                                     </div>
                                     <div class="col-md">
-                                        <label for="to-account" class="form-label">To account</label>
+                                        <label for="to-account" class="form-label">Cuenta de destino</label>
                                         <template v-if="transferType == 'third'">
                                             <input id="to-account" type="text" v-model="accountToNumber" class="form-control" placeholder="VIN000554" aria-label="to account">
                                         </template>
                                         <template v-if="transferType == 'own'">
                                             <select id="to-account" v-model="accountToNumber" class="form-select" aria-label="Default select example" required>
-                                                <option value="VIN">Open this select menu</option>
+                                                <option value="VIN">Abrir menu de selección</option>
                                                 <option v-for="account in clientAccountsTo" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
                                             </select>
                                         </template>
@@ -121,22 +121,22 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-3">
-                                        <label for="amount" class="form-label">Amount</label>
+                                        <label for="amount" class="form-label">Monto</label>
                                         <input id="amount" v-model="amount" type="number" class="form-control" placeholder="VIN000554" aria-label="to account">
                                     </div>
                                     <div class="col-md">
-                                        <label for="description" class="form-label">Description</label>
-                                        <input id="description" v-model="description" type="text" class="form-control" placeholder="Rent payment" aria-label="to account">
+                                        <label for="description" class="form-label">Descripción</label>
+                                        <input id="description" v-model="description" type="text" class="form-control" placeholder="" aria-label="to account">
                                     </div>
                                 </div>
-                                <button type="button" v-on:click="checkTransfer" class="btn btn-sm btn-outline-primary mt-4">transfer</button>
+                                <button type="button" v-on:click="checkTransfer" class="btn btn-sm btn-outline-primary mt-4">Transferir</button>
                             </form>
                             <div class="ChatTransfer">
                                 <hr>
                                 <h3>Transfiere con IA</h3>
                                 <input id="prompt" v-model="prompt" type="text" placeholder="" >
                             </div>
-                            <button type="button" v-on:click="sendPrompt" class="btn btn-sm btn-outline-primary mt-4">ChatTransfer</button>
+                            <button type="button" v-on:click="sendPrompt" class="btn btn-sm btn-outline-primary mt-4">Transferir</button>
                         </div>
                     </div>
                 </div>
@@ -147,14 +147,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmPasswordLabel">OTP Password</h5>
+                    <h5 class="modal-title mr-10" id="confirmPasswordLabel">Clave dinámica</h5>
                     <input id="passwordTOTP" type="text" v-model="passwordTOTP"  placeholder="" aria-label="">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" v-on:click="validateOTP" class="btn btn-sm btn-outline-primary">Transfer the funds</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" v-on:click="validateOTP" class="btn btn-sm btn-outline-primary">Transferir monto</button>
                 </div>
             </div>
         </div>
@@ -164,11 +164,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="okModalLabel">Transaction complete!</h5>
+                    <h5 class="modal-title" id="okModalLabel">Transacción completa!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    The funds have been transferred! <i class="bi bi-check-circle-fill text-primary"></i>
+                    Monto transferido! <i class="bi bi-check-circle-fill text-primary"></i>
                 </div>
                 <div class="modal-footer">
                     <button type="button" v-on:click="finish" class="btn btn-sm btn-outline-primary" data-bs-dismiss="modal">Ok</button>
@@ -183,6 +183,5 @@
             integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
             crossorigin="anonymous"></script>
     <script src="js/transfers.js"></script>
-    <script src="js/accounts.js.js"></script>
 </body>
 </html>

@@ -180,7 +180,12 @@ section {
     flex-direction: row;
 }
 
-#cards-button {
-    background-color: white;
-    color: #101828;
+.button-create {
+    display: flex;
+    flex-direction: row:
+    align-items: center;
+}
+
+.create-card-button {
+    margin-left: 15px;
 }
