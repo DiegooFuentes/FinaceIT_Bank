@@ -89,7 +89,13 @@ const app = new Vue({
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                   });
-                },
+            },
+            formatIntNumber: function(number) {
+                  return Number(number).toLocaleString('es-CL', {
+                  style: 'currency',
+                  currency: 'CLP',
+                  });
+            },
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));

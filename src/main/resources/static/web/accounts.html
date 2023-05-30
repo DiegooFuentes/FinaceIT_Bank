@@ -97,7 +97,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">{{ account.number }}</h5>
                                             <p class="card-text">{{ formatDate(account.creationDate) }} </p>
-                                            <p class="balance"> $ {{ account.balance }} </p>
+                                            <p class="balance">{{ formatIntNumber(account.balance) }} </p>
                                         </div>
                                     </div>
                                 </a>
@@ -115,7 +115,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ loan.name }}</h5>
                                         <p class="card-text"> payments: {{ loan.payments}}</p>
-                                        <p class="balance"> ${{ loan.amount }} </p>
+                                        <p class="balance"> {{ formatIntNumber(loan.amount) }} </p>
                                     </div>
                                 </div>
                             </div>
@@ -129,19 +129,19 @@
                     <div class="indicators">
                         <div class="indicator-body">
                             <h5 class="indicator-title">UF</h5>
-                            <p class="text-center lead">${{ uf }}</p>
+                            <p class="text-center lead">{{ formatNumber(uf) }}</p>
                         </div>
                         <div class="indicator-body">
                             <h5 class="indicator-title">Dólar</h5>
-                            <p class="text-center lead">${{ dolar }}</p>
+                            <p class="text-center lead">{{ formatNumber(dolar) }}</p>
                         </div>
                         <div class="indicator-body">
                             <h5 class="indicator-title">Euro</h5>
-                            <p class="text-center lead">${{ euro }}</p>
+                            <p class="text-center lead">{{ formatNumber(euro) }}</p>
                         </div>
                         <div class="indicator-body">
                             <h5 class="indicator-title">UTM</h5>
-                            <p class="text-center lead">${{ utm }}</p>
+                            <p class="text-center lead">{{ formatNumber(utm) }}</p>
                         </div>
                     </div>
                 </div>

@@ -45,6 +45,12 @@ const app = new Vue({
                             this.errorToats.show();
                         })
         },
+        formatIntNumber: function(number) {
+                  return Number(number).toLocaleString('es-CL', {
+                  style: 'currency',
+                  currency: 'CLP',
+                  });
+        },
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
