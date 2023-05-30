@@ -165,3 +165,27 @@
     -webkit-transform: rotateY(0deg);
     -moz-transform: rotateY(0deg);
 }
+
+section {
+    display: flex;
+    flex-direction: column;
+}
+
+.cards.title {
+
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-create {
+    display: flex;
+    flex-direction: row:
+    align-items: center;
+}
+
+.create-card-button {
+    margin-left: 15px;
+}
