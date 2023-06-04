@@ -1,14 +1,18 @@
 package com.financeit.web.models;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "pending_transactions")
 public class PendingTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -27,9 +31,6 @@ public class PendingTransaction {
 
     private String email;
 
-
-    public PendingTransaction() {
-    }
 
     public PendingTransaction(TransactionType type, double amount, String description, String passwordTOTP, LocalDateTime localDateTimeTOTP) {
         this.type = type;

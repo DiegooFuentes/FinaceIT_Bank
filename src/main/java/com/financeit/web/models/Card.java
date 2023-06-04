@@ -1,12 +1,19 @@
 package com.financeit.web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "cards")
 public class Card {
 
     @Id
@@ -28,8 +35,6 @@ public class Card {
 
     private LocalDateTime fromDate;
 
-    public Card() {
-    }
 
     public Card(String cardHolder, CardType type, CardColor color, String number, String cvv, LocalDateTime thruDate, LocalDateTime fromDate) {
         this.cardHolder = cardHolder;

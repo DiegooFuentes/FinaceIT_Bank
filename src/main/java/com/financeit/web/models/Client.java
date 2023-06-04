@@ -1,5 +1,6 @@
 package com.financeit.web.models;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -7,7 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "clients")
 public class Client {
 
     @Id
@@ -42,8 +49,6 @@ public class Client {
         this.password = password;
     }
 
-    public Client() {
-    }
 
     public Long getId() {
         return id;

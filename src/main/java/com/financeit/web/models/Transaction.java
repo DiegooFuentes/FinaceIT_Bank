@@ -1,13 +1,20 @@
 package com.financeit.web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "transactions")
 public class Transaction {
 
     @Id
@@ -27,8 +34,6 @@ public class Transaction {
     @JoinColumn(name="account_id")
     private Account account;
 
-    public Transaction() {
-    }
 
     public Transaction(TransactionType type, double amount, String description,LocalDateTime date) {
         this.type = type;
