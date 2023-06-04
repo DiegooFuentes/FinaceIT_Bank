@@ -1,10 +1,17 @@
 package com.financeit.web.models;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "transaction_links")
 public class TransactionLink {
 
     @Id
@@ -34,8 +41,6 @@ public class TransactionLink {
         this.account = account;
     }
 
-    public TransactionLink() {
-    }
 
     public TransactionLink(String destinationAccount, double amount, String description, String linkCode, String link) {
         this.destinationAccount = destinationAccount;

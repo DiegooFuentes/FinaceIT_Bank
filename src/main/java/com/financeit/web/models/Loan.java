@@ -1,6 +1,7 @@
 package com.financeit.web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,7 +11,13 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "loans")
 public class Loan {
 
     @Id
@@ -22,8 +29,6 @@ public class Loan {
 
     private double maxAmount;
 
-    public Loan() {
-    }
 
     public Loan(String name, double maxAmount, List<Integer> payments) {
         this.name = name;

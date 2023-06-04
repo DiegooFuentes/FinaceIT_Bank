@@ -1,11 +1,18 @@
 package com.financeit.web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "client_loans")
 public class ClientLoan {
 
     @Id
@@ -25,8 +32,6 @@ public class ClientLoan {
     @JoinColumn(name="loan_id")
     private Loan loan;
 
-    public ClientLoan() {
-    }
 
     public ClientLoan(double amount, int payments) {
         this.amount = amount;

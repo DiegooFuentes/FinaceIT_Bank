@@ -1,5 +1,6 @@
 package com.financeit.web.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -7,7 +8,13 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "accounts")
 public class Account {
 
     @Id
@@ -20,9 +27,6 @@ public class Account {
     private LocalDateTime creationDate;
 
     private double balance;
-
-    public Account() {
-    }
 
     public Account(String number,LocalDateTime creationDate, double balance) {
         this.number = number;
